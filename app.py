@@ -29,9 +29,9 @@ login_manager.login_message_category = 'info'
 def initialize_database():
     try:
         db.create_all()
-        logging.info("Database initialized successfully!")
+        print("Database initialized successfully!")
     except Exception as e:
-        logging.error(f"Error initializing database: {e}")
+        print(f"Error initializing database: {e}")
 
 # Import models
 from models.user import User
