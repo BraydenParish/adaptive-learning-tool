@@ -52,7 +52,7 @@ def index():
 
 # Serverless handler configuration
 try:
-    from vercel_python import vercel_request_handler
+    from vercel import vercel_request_handler
     handler = vercel_request_handler(app)
 except ImportError:
     handler = app
