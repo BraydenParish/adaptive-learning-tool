@@ -1,18 +1,18 @@
-import os
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 from dotenv import load_dotenv
+import os
 
 # Load environment variables
 load_dotenv()
 
 # Initialize Flask application
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-key-for-testing')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI', 'sqlite:///adaptive_learning.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', '').replace('postgres://', 'postgresql://', 1)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize extensions
@@ -22,6 +22,11 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'auth.login'
 login_manager.login_message_category = 'info'
+
+# Database initialization
+@app.before_first_request
+def initialize_database():
+    db.create_all()
 
 # Import models
 from models.user import User
@@ -43,8 +48,14 @@ app.register_blueprint(api, url_prefix='/api')
 
 @app.route('/')
 def index():
-    """Landing page route."""
     return render_template('index.html')
+
+# Serverless handler configuration
+try:
+    from vercel_python import vercel_request_handler
+    handler = vercel_request_handler(app)
+except ImportError:
+    handler = app
 
 if __name__ == '__main__':
     app.run(debug=True)
