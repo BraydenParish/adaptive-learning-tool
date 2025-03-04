@@ -1,3 +1,5 @@
+#!/usr/bin/env python import werkzeug.urls if not hasattr(werkzeug.urls, 'url_decode'): import urllib.parse from werkzeug.datastructures import MultiDict def url_decode(s, charset='utf-8', errors='replace'): # Replicate the old url_decode behavior, return a MultiDict of query parameters. return MultiDict(urllib.parse.parse_qsl(s, keep_blank_values=True)) werkzeug.urls.url_decode = url_decode
+
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
