@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Adaptive Learning - Home{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>Adaptive Learning Platform</h1>
+    <p>Personalized learning that adapts to your knowledge level</p>
+    
+    {% if current_user.is_authenticated %}
+        <div class="cta-buttons">
+            <a href="{{ url_for('learning.subject_selection') }}" class="btn btn-primary">Start Learning</a>
+            <a href="{{ url_for('dashboard.index') }}" class="btn btn-secondary">View Your Progress</a>
+        </div>
+    {% else %}
+        <div class="cta-buttons">
+            <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Login</a>
+            <a href="{{ url_for('auth.register') }}" class="btn btn-secondary">Register</a>
+        </div>
+    {% endif %}
+</div>
+
+<div class="features">
+    <div class="feature">
+        <h2>Adaptive Learning</h2>
+        <p>Questions adjust to your knowledge level, ensuring optimal challenge</p>
+    </div>
+    
+    <div class="feature">
+        <h2>AI-Powered Questions</h2>
+        <p>Leveraging Gemini 2.0 flash for intelligent, subject-specific questions</p>
+    </div>
+    
+    <div class="feature">
+        <h2>Interactive Mode</h2>
+        <p>Ask follow-up questions to deepen your understanding of concepts</p>
+    </div>
+    
+    <div class="feature">
+        <h2>Learning Analytics</h2>
+        <p>Track your progress with detailed performance metrics</p>
+    </div>
+</div>
+{% endblock %}
