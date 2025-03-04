@@ -5,6 +5,7 @@ from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 from dotenv import load_dotenv
 import os
+import logging
 
 # Load environment variables
 load_dotenv()
@@ -26,7 +27,11 @@ login_manager.login_message_category = 'info'
 # Database initialization
 @app.before_first_request
 def initialize_database():
-    db.create_all()
+    try:
+        db.create_all()
+        logging.info("Database initialized successfully!")
+    except Exception as e:
+        logging.error(f"Error initializing database: {e}")
 
 # Import models
 from models.user import User
